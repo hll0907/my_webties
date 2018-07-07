@@ -17,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hll.web.pojo.User;
 import com.hll.web.result.ResultMsg;
+import com.hll.web.service.IntergralService;
 import com.hll.web.service.UserService;
 import com.hll.web.util.CommUtil;
 import com.hll.web.util.PwdUtil;
@@ -32,6 +33,9 @@ public class UserController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	IntergralService intergralService;
 
 	/**
 	 * 查询所以用户
@@ -230,9 +234,9 @@ public class UserController {
 	@ApiOperation(value = "忘记密码", notes = "根据邮箱验证码修改密码，code为0，无次用户，code为-1，还未获取验证码，code为-2，验证码错误，code为1，修改成功")
 	@ResponseBody
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "用户手机号", required = true, paramType = "query"),
-		@ApiImplicitParam(name = "actiCode", value = "邮箱验证码", required = true, paramType = "query"),
-		@ApiImplicitParam(name = "newPassword", value = "新密码", required = true, paramType = "query")})
-	public ResultMsg forgetPassword(String phone, String actiCode,String newPassword) {
+			@ApiImplicitParam(name = "actiCode", value = "邮箱验证码", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "newPassword", value = "新密码", required = true, paramType = "query") })
+	public ResultMsg forgetPassword(String phone, String actiCode, String newPassword) {
 		User selectByPhone = userService.selectByPhone(phone);
 		if (selectByPhone == null) {
 			return ResultMsg.failure("暂无此用户", null, 0);

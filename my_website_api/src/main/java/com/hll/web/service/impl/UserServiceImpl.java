@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hll.web.dao.IntergralRecordsMapper;
 import com.hll.web.dao.UserMapper;
+import com.hll.web.pojo.IntergralRecords;
 import com.hll.web.pojo.User;
 import com.hll.web.service.UserService;
 import com.hll.web.util.DateTimeUtil;
@@ -17,7 +19,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserMapper userMapper;
-
+	@Autowired
+	IntergralRecordsMapper intergralRecordsMapper;
 	@Override
 	public List<User> selectUserAll() {
 		List<User> uList = userMapper.selectUserAll();
@@ -52,6 +55,17 @@ public class UserServiceImpl implements UserService {
 		user2.setHeadPic(record.getHeadPic());
 		int insertSelective = userMapper.insertSelective(user2);
 		if (insertSelective > 0) {
+			IntergralRecords intergralrecord = new IntergralRecords();
+			intergralrecord.setTempIntergral(100);
+			intergralrecord.setIntergral(100);
+			intergralrecord.setUserId(user2.getId());
+			intergralrecord.setSource("注册");
+			intergralrecord.setNote("注册奖励");
+			String createdAt = DateTimeUtil.getStringDate();
+			intergralrecord.setCreatedAt(createdAt);
+			intergralrecord.setUpdatedAt(createdAt);
+			intergralrecord.setIntergralType(1);
+			intergralRecordsMapper.insert(intergralrecord);
 			return 1;
 		}
 		return 0;
