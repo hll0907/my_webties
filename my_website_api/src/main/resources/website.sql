@@ -41,3 +41,6 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+
+DROP TABLE IF EXISTS `intergral`;
+
