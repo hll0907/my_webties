@@ -1,0 +1,15 @@
+package app;
+
+public class Snippet {
+	<!-- 扩充了注解驱动，可以将请求参数绑定到控制器参数 --> 
+	    <!-- <mvc:annotation-driven/> -->
+	    <mvc:annotation-driven conversion-service="conversionService3"/>
+	    <!-- 启用基于Spring的注解 -->
+	    <context:annotation-config/>
+	    <!-- 静态资源处理 -->
+	    <mvc:resources mapping="/app/**" location="/app/" />
+	    <mvc:resources mapping="/script/**" location="/script/" />        
+	    <mvc:resources mapping="/css/**" location="/css/" />  
+	    <mvc:resources mapping="/images/**" location="/images/" /> 
+}
+

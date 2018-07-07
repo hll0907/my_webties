@@ -1,0 +1,10 @@
+package com.hll.web.controller;
+
+import com.hll.web.result.ResultMsg;
+
+public class WeChatController {
+
+	public ResultMsg weChatLogin() {
+		return null;
+	}
+}

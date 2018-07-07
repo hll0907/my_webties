@@ -1,0 +1,83 @@
+package com.hll.web.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hll.web.dao.UserMapper;
+import com.hll.web.pojo.User;
+import com.hll.web.service.UserService;
+import com.hll.web.util.PwdUtil;
+
+@Service
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	UserMapper userMapper;
+
+	@Override
+	public List<User> selectUserAll() {
+		List<User> uList = userMapper.selectUserAll();
+		if (uList.isEmpty()) {
+			return null;
+		}
+		return uList;
+	}
+
+	@Override
+	public List<User> selectUserById(Integer id) {
+		List<User> selectUserById = userMapper.selectUserById(id);
+		if (selectUserById.isEmpty()) {
+			return null;
+		}
+		return selectUserById;
+	}
+
+	@Transactional
+	@Override
+	public int insertSelective(User record) {
+		User user = userMapper.selectByPhone(record.getPhone());
+		if (user != null) {
+			return 0;
+		}
+		User user2 = new User();
+		user2.setSalt(PwdUtil.getSalt());
+		user2.setPhone(record.getPhone());
+		user2.setNickname(record.getNickname());
+		user2.setHashPassword(PwdUtil.getHashPassword(PwdUtil.getSalt(), record.getHashPassword()));
+		System.out.println(PwdUtil.getSalt());
+		System.out.println(record.getHashPassword());
+		System.out.println(PwdUtil.getHashPassword(PwdUtil.getSalt(), record.getHashPassword()));
+		user2.setHeadPic(record.getHeadPic());
+		int insertSelective = userMapper.insertSelective(user2);
+		if (insertSelective > 0) {
+			return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public User selectByPhone(String phone) {
+		User user = userMapper.selectByPhone(phone);
+		if (user != null) {
+			return user;
+		}
+		return null;
+	}
+
+	@Override
+	public User userLogin(User user, String password) {
+		String salt = user.getSalt();
+		String userpassword = PwdUtil.getHashPassword(salt, password);
+		System.out.println(salt);
+		System.out.println(userpassword);
+		System.out.println(user.getHashPassword());
+		if (PwdUtil.pwdCompare(userpassword, user.getHashPassword())) {
+			return user;
+		}
+		return null;
+	}
+
+}

@@ -1,0 +1,6 @@
+package com.hll.web.service;
+
+public interface MailService {
+	
+	int  sendMail(String usermail);
+}

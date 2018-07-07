@@ -1,0 +1,9 @@
+package com.hll.web.service;
+
+import java.io.FileNotFoundException;
+
+import javax.mail.MessagingException;
+
+public interface MailService {
+	
+}

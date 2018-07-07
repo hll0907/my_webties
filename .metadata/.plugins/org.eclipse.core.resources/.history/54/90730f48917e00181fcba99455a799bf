@@ -1,0 +1,9 @@
+package com.hll.Util;
+
+import okhttp3.OkHttpClient;
+
+public final class HttpUtil {
+	private static final OkHttpClient oK_HTTP_CLIENT=new OkHttpClient();
+	
+	
+}

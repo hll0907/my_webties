@@ -1,0 +1,69 @@
+package com.hll.Util;
+
+import java.util.Map;
+
+import com.alibaba.fastjson.JSONObject;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+
+public final class HttpUtil {
+	private static final OkHttpClient oK_HTTP_CLIENT = new OkHttpClient();
+
+	public static enum HttpMethod {
+		GET, POST_JSON, POST_FORM;
+	}
+	/**
+	 * http 请求统一入口
+	 * 
+	 * @param url
+	 *            请求地址
+	 * @param httpMethod
+	 *            请求类型
+	 * @param params
+	 *            请求参数
+	 * @return json 数据
+	 */
+	public static JSONObject requestHttpServise(String url, HttpMethod httpMethod, Map<String, String> params) {
+		switch (httpMethod) {
+		case GET:
+			return requestHttpGet(url,params);
+		case POST_JSON:
+			return requestHttpPost(url,params);
+		case POST_FORM:
+			return requestHttpPostWithForm(url,params);
+		}
+		return null;
+	}
+
+	/**
+	 * 请求表单提交
+	 * @param url 请求地址
+	 * @param params 参数
+	 * @return
+	 */
+	private static JSONObject requestHttpPostWithForm(String url, Map<String, String> params) {
+		FormBody.Builder builder=new FormBody.Builder();
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param url
+	 * @param params
+	 * @return
+	 */
+	private static JSONObject requestHttpPost(String url, Map<String, String> params) {
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param url
+	 * @param params
+	 * @return
+	 */
+	private static JSONObject requestHttpGet(String url, Map<String, String> params) {
+		return null;
+	}
+}

@@ -1,0 +1,33 @@
+package com.hll.web.service.impl;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
+import org.springframework.stereotype.Service;
+
+import com.hll.web.service.MailService;
+import com.hll.web.util.MailUtil;
+import com.hll.web.util.UUIDUtil;
+
+@Service
+public class MailServiceImpl implements MailService {
+
+	@Override
+	public int sendEmail(String toAddress, String subject, String msgBody) {
+		int sendMailEntity = 0;
+		subject = "测试";
+		msgBody = UUIDUtil.getUUID();
+		try {
+			sendMailEntity = MailUtil.sendMailEntity(toAddress, subject, msgBody);
+		} catch (AddressException e) {
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		if (sendMailEntity == 1) {
+			return 1;
+		}
+		return 0;
+	}
+
+}

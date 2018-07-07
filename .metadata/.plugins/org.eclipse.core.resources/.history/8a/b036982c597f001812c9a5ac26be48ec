@@ -1,0 +1,19 @@
+package com.hll.web.controller;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.hll.web.result.ResultMsg;
+
+@Controller
+@RequestMapping("/")
+public class IndexController {
+	private static Logger logger = Logger.getLogger(IndexController.class); 
+
+	@RequestMapping("/index")
+	public String loginHtml() {
+		logger.error(ResultMsg.success("这是主页"));
+		return "index";
+	}
+}

@@ -1,0 +1,49 @@
+package com.hll.web.service.impl;
+
+import java.io.FileNotFoundException;
+
+import javax.mail.MessagingException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+
+import com.hll.web.service.MailService;
+
+public class MailServiceImpl implements MailService {
+
+	@Autowired
+	private JavaMailSender mailSender;
+	
+	@Override
+	public void sendEmail(String toAddress, String fromAddress, String subject, String msgBody) {
+		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+		simpleMailMessage.setFrom(fromAddress);
+		simpleMailMessage.setTo(toAddress);
+		simpleMailMessage.setSubject(subject);
+		simpleMailMessage.setText(msgBody);
+		mailSender.send(simpleMailMessage);
+	}
+
+	@Override
+	public void sendHtmlEmail(String toAddress, String fromAddress, String subject, String htmlBody)
+			throws MessagingException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendHtmlEmail(String toAddress, String fromAddress, String subject, String htmlBody, String filePath)
+			throws MessagingException, FileNotFoundException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendHtmlEmail(String toAddress, String fromAddress, String subject, String htmlBody, String filePath,
+			String fileName) throws MessagingException, FileNotFoundException {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

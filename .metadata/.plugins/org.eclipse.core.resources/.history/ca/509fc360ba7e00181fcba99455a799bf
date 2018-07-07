@@ -1,0 +1,40 @@
+package com.hll.Util;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+
+/**
+ * 密码加密
+ * @author Administrator
+ *
+ */
+public class PwdUtil {
+	
+	public static String getSalt() {
+		byte[] bytes = new byte[20];
+		SecureRandom sRandom=null;
+		try {
+			sRandom = SecureRandom.getInstance("SHA1PRNG","SUN");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sRandom.nextBytes(bytes);
+		StringBuffer sBuffer = new StringBuffer();
+		for (byte b : bytes) {
+			String hex = Integer.toHexString(0xff & b);
+			if (hex.length() == 1) {
+				sBuffer.append('0');
+				sBuffer.append(hex);
+			}
+		}
+		return sBuffer.toString();
+	}
+	public static void main(String[] args) {
+		System.err.println(getSalt());
+	}
+}

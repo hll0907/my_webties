@@ -1,0 +1,111 @@
+package com.hll.web.util;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
+
+/**
+ * 密码加密
+ * 
+ * @author Administrator
+ *
+ */
+public class PwdUtil {
+
+	/**
+	 * 通过SecureRandom 随机获得一个16进制的盐值
+	 * 
+	 * @return String
+	 */
+	public static String getSalt() {
+		byte[] bytes = new byte[20];
+		SecureRandom sRandom = null;
+		try {
+			sRandom = SecureRandom.getInstance("SHA1PRNG", "SUN");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sRandom.nextBytes(bytes);
+		StringBuffer sBuffer = new StringBuffer();
+		for (byte b : bytes) {
+			String hex = Integer.toHexString(0xff & b);
+			if (hex.length() == 1) {
+				sBuffer.append('0');
+				sBuffer.append(hex);
+			}
+		}
+		return sBuffer.toString();
+	}
+
+	/**
+	 * 将密码加密(SHA_512加密)
+	 * 
+	 * @param salt
+	 * @param pwd
+	 * @return String
+	 */
+	public static String getHashPassword(String salt, String pwd) {
+		String strResult = null;
+		if (salt == null || salt.isEmpty() || pwd == null || pwd.isEmpty()) {
+			return null;
+		}
+		String saltAndPwd = new StringBuffer(salt).append(pwd).toString();
+//		System.out.println(salt);
+//		System.out.println(saltAndPwd);
+		try {
+			// 创建加密对象，传入加密类型
+			MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
+			// 传入要加密的字符串
+			messageDigest.update(saltAndPwd.getBytes());
+			// 得到byte 类型结果
+			byte byteBuffer[] = messageDigest.digest();
+			StringBuffer strHexString = new StringBuffer();
+			// 将byte类型转换为String
+			for (byte b : byteBuffer) {
+				String hex = Integer.toHexString(0xff & b);
+				if (hex.length() == 1) {
+					strHexString.append('0');
+					strHexString.append(hex);
+				}
+			}
+			// 得到返回结果
+			strResult = strHexString.toString();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return strResult;
+	}
+
+	/**
+	 * 比较密码是否相等
+	 * 
+	 * @param inputPwd
+	 *            输入的密码
+	 * @param originPwd
+	 *            用户密码
+	 * @return boolean
+	 */
+	public static boolean pwdCompare(String inputPwd, String originPwd) {
+		return slowEquals(inputPwd.getBytes(), originPwd.getBytes());
+	}
+
+	/**
+	 * 比较两个数组是否相等（慢比较（无论哪个位置开始就不相等了，所需的时间都是一样的））
+	 * 
+	 * @param bytes
+	 * @param bytes2
+	 * @return
+	 */
+	private static boolean slowEquals(byte[] bytes, byte[] bytes2) {
+		int diff = bytes.length ^ bytes2.length;
+		for (int i = 0; i < bytes.length && i < bytes2.length; i++) {
+			diff |= bytes[i] ^ bytes2[i];
+		}
+		return diff == 0;
+	}
+}

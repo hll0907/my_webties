@@ -1,0 +1,5 @@
+package com.hll.web.service.impl;
+
+public class UserServiceImpl {
+
+}

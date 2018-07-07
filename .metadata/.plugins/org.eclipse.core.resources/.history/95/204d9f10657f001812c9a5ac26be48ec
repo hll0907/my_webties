@@ -1,0 +1,16 @@
+CREATE TABLE 'user'(
+ id int(11) NOT NULL AUTO_INCREMENT,
+ nickname varchar(50) NOT NULL DEFAULT '',
+ phone varchar(11) NOT NULL DEFAULT '',
+ salt varchar(25) NOT NULL DEFAULT '',
+ hash_password varchar(50) NOT NULL DEFAULT NULL,
+ head_pic varchar(255) NOT NULL DEFAULT '',
+ user_type int(11) NOT NULL DEFAULT '0',
+ openid varchar(255) NOT NULL DEFAULT '',
+ create_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ update_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ last_visit_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+ integral int(11) NOT NULL DEFAULT '0',
+ vip_type varchar(32) NOT NULL DEFAULT '普通会员',
+ status tinyint(1) NOT NULL DEFAULT '1',
+ )

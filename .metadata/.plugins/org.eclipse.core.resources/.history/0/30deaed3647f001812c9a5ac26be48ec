@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="taobao">
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection connectionURL="jdbc:mysql://127.0.0.1:3306/taobao"
+			driverClass="com.mysql.jdbc.Driver" password="root" userId="root" />
+		<!-- targetProject:生成POJO类的位置 -->
+		<javaModelGenerator targetPackage="com.springboot.demo.pojo"
+			targetProject="SpringBootWeb/src/main/java" />
+		<!-- targetProject:mapper映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="com.springboot.demo.mapper" targetProject="SpringBootWeb/src/main/java" />
+		<!-- targetPackage：mapper接口生成的位置 -->
+		<javaClientGenerator targetPackage="com.springboot.demo.dao"
+			targetProject="SpringBootWeb/src/main/java" type="XMLMAPPER" />
+		<!-- 指定数据库表 -->
+		<table tableName="user"/>
+		<table tableName="user_role"/>
+		<table tableName="activity"/>
+		<table tableName="activity_item"/>
+		<table tableName="coupon"/>
+		<table tableName="item"/>
+		<table tableName="item_image"/>
+		<table tableName="mall"/>
+		<table tableName="mall_shop"/>
+		<table tableName="permission"/>
+		<table tableName="role"/>
+		<table tableName="role_permission"/>
+		<table tableName="shop"/>
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,32 @@
+package com.hll.web.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.hll.web.result.ResultMsg;
+import com.hll.web.service.MailService;
+import com.hll.web.util.MailUtil;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
+@Controller
+@RequestMapping("/mail")
+public class MailController {
+
+	@Autowired
+	MailService mailService;
+
+	@RequestMapping(value = "/sendmail", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
+	@ApiOperation(value = "发送验证码", notes = "发送验证码")
+	@ResponseBody
+	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "usermail", value = "用户邮箱", required = true, paramType = "query") })
+	public ResultMsg sendmail(Integer userId, String usermail) {
+		return ResultMsg.success(null);
+	}
+}

@@ -1,0 +1,10 @@
+package com.hll.Util;
+
+/**
+ * 密码加密
+ * @author Administrator
+ *
+ */
+public class PwdUtil {
+	
+}

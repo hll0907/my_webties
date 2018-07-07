@@ -1,0 +1,6 @@
+package com.hll.web.util;
+
+public class MailUtil {
+	
+
+}

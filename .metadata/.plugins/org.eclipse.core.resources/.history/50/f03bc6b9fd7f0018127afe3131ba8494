@@ -1,0 +1,8 @@
+package com.hll.web.util;
+
+@EnableWebMvc
+@EnableSwagger2
+@Configuration
+public class SwaggerConfig {
+
+}

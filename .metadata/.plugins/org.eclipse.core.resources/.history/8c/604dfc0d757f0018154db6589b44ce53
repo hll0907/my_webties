@@ -1,0 +1,32 @@
+package com.hll.web.dao;
+
+import com.hll.web.pojo.User;
+import com.hll.web.pojo.UserWithBLOBs;
+
+public interface UserMapper {
+    int deleteByPrimaryKey(Integer id);
+
+	int insert(User record);
+
+	int insertSelective(User record);
+
+	User selectByPrimaryKey(Integer id);
+
+	int updateByPrimaryKeySelective(User record);
+
+	int updateByPrimaryKey(User record);
+
+	int deleteByPrimaryKey(String user);
+
+    int insert(UserWithBLOBs record);
+
+    int insertSelective(UserWithBLOBs record);
+
+    UserWithBLOBs selectByPrimaryKey(String user);
+
+    int updateByPrimaryKeySelective(UserWithBLOBs record);
+
+    int updateByPrimaryKeyWithBLOBs(UserWithBLOBs record);
+
+    int updateByPrimaryKey(User record);
+}

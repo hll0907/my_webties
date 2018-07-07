@@ -1,0 +1,10 @@
+package com.hll.web.util;
+
+import java.util.Properties;
+
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+public class MailUtil {
+	
+
+}

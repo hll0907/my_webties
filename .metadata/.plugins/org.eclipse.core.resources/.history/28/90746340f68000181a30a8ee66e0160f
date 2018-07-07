@@ -1,0 +1,6 @@
+package com.hll.web.canstants;
+
+public class Global {
+	//发送用户邮箱验证码
+	public final static String mailSubject = "验证码";
+}

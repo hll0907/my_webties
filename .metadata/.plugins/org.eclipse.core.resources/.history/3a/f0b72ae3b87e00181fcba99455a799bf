@@ -1,0 +1,320 @@
+package com.hll.Util;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.alibaba.fastjson.JSONObject;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+public final class HttpUtil {
+	private static final OkHttpClient oK_HTTP_CLIENT = new OkHttpClient();
+
+	public static enum HttpMethod {
+		GET, POST_JSON, POST_FORM;
+	}
+
+	private static final MediaType MEDIA_TYPE_JSON = MediaType
+			.parse("application/x-www-form-urlencoded; charset=utf-8");
+	private static final MediaType MEDIA_TYPE_FILE = MediaType.parse("application/octet-stream");
+
+	/**
+	 * http 请求统一入口
+	 * 
+	 * @param url
+	 *            请求地址
+	 * @param httpMethod
+	 *            请求类型
+	 * @param params
+	 *            请求参数
+	 * @return json 数据
+	 */
+	public static JSONObject requestHttpServise(String url, HttpMethod httpMethod, Map<String, String> params) {
+		switch (httpMethod) {
+		case GET:
+			return requestHttpGet(url, params);
+		case POST_JSON:
+			return requestHttpPost(url, params);
+		case POST_FORM:
+			return requestHttpPostWithForm(url, params);
+		}
+		return null;
+	}
+
+	/**
+	 * get请求
+	 * 
+	 * @param url
+	 *            接口地址
+	 * @param params
+	 *            请求参数
+	 * @return
+	 */
+	private static JSONObject requestHttpGet(String url, Map<String, String> params) {
+		Response response = null;
+
+		try {
+			String requestUrl = url;
+			if (params != null) {
+				String tempParams = mapToParamsString(params);
+				// 补全请求地址
+				requestUrl = String.format("%s?%s", url, tempParams);
+			}
+			// 创建一个请求
+			Request request = new Request.Builder().url(requestUrl).build();
+			// 创建一个Call
+			final Call call = oK_HTTP_CLIENT.newCall(request);
+			// 执行请求
+			response = call.execute();
+			if (response.isSuccessful()) {
+				return JSONObject.parseObject(response.body().string());
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			close(response);
+		}
+		return null;
+	}
+
+	/**
+	 * post 请求
+	 * 
+	 * @param url
+	 *            接口地址
+	 * @param params
+	 *            请求参数
+	 * @return
+	 */
+	private static JSONObject requestHttpPost(String url, Map<String, String> params) {
+		Response response = null;
+		try {
+			String tempParms = mapToParamsString(params);
+			// 创建一个请求实体对象 RequestBody
+			RequestBody body = RequestBody.create(MEDIA_TYPE_JSON, tempParms);
+			// 创建请求
+			Request request = new Request.Builder().url(url).post(body).build();
+			// 创建Call
+			Call call = oK_HTTP_CLIENT.newCall(request);
+			// 执行请求
+			response = call.execute();
+			// 请求成功
+			if (response.isSuccessful()) {
+				return JSONObject.parseObject(response.body().string());
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			close(response);
+		}
+		return null;
+	}
+
+	/**
+	 * 请求表单提交
+	 * 
+	 * @param url
+	 *            请求地址
+	 * @param params
+	 *            参数
+	 * @return
+	 */
+	private static JSONObject requestHttpPostWithForm(String url, Map<String, String> params) {
+		Response response = null;
+		try {
+			FormBody.Builder builder = new FormBody.Builder();
+			for (String key : params.keySet()) {
+				// 追加表单信息
+				builder.add(key, params.get(key));
+			}
+			// 生成表单实体对象
+			RequestBody formBody = builder.build();
+			// 创建一个请求
+			final Request request = new Request.Builder().url(url).post(formBody).build();
+			// 创建一个Call
+			final Call call = oK_HTTP_CLIENT.newCall(request);
+			// 执行请求
+			response = call.execute();
+			// 请求执行成功
+			if (response.isSuccessful()) {
+				return JSONObject.parseObject(response.body().string());
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(response);
+		}
+		return null;
+	}
+
+	private static String mapToParamsString(Map<String, String> params) throws UnsupportedEncodingException {
+		// 处理参数
+		if (params == null) {
+			return "";
+		}
+		StringBuilder tempParams = new StringBuilder();
+		int pos = 0;
+		for (String key : params.keySet()) {
+			if (pos > 0) {
+				tempParams.append("&");
+			}
+			tempParams.append(String.format("%s=%s", key, URLEncoder.encode(params.get(key), "utf-8")));
+			pos++;
+		}
+		return tempParams.toString();
+	}
+
+	// 关闭请求
+	private static void close(Response response) {
+		if (response != null) {
+			response.close();
+		}
+	}
+
+	/**
+	 * 下载文件
+	 * 
+	 * @param filepath
+	 * @param filename
+	 * @param url
+	 * @return 文件存放位置（觉都路径）
+	 */
+	public static String downloadFile(final String filepath, final String filename, String url) {
+		Response response = null;
+		try {
+			// 创建请求
+			Request request = new Request.Builder().url(url).build();
+			// 创建call
+			Call call = oK_HTTP_CLIENT.newCall(request);
+			// 执行请求
+			response = call.execute();
+			if (response.isSuccessful()) {
+				// 将响应结果存入文件
+				return writeFile(filepath, filename, response.body().byteStream());
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(response);
+		}
+		return url;
+	}
+
+	/**
+	 * 写入本地文件
+	 * 
+	 * @param filepath
+	 * @param filename
+	 * @param inputStream
+	 * @return
+	 */
+	private static String writeFile(String filepath, String filename, InputStream inputStream) {
+		int len;
+		byte[] buf = new byte[2018];
+		// 写入本地文件
+		File file = null;
+		FileOutputStream fos = null;
+		try {
+			file = new File(filepath + filename);
+			fos = new FileOutputStream(file);
+			while ((len = inputStream.read(buf)) != -1) {
+				fos.write(buf, 0, len);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return file.getAbsolutePath();
+	}
+
+	/**
+	 * 上传文件
+	 * 
+	 * @param url
+	 * @param filePath
+	 * @param paramName
+	 * @return
+	 */
+	public static JSONObject uploadFile(String url, String filePath, String paramName) {
+		Response response = null;
+		try {
+			File file = new File(filePath);
+			MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+			RequestBody fileBody = RequestBody.create(MEDIA_TYPE_FILE, file);
+			String filename = file.getName();
+			builder.addFormDataPart(paramName, filename, fileBody);
+			// 创建请求
+			Request request = new Request.Builder().url(url).post(builder.build()).build();
+			// 创建一个Call
+			Call call = oK_HTTP_CLIENT.newCall(request);
+			// 执行请求
+			response = call.execute();
+			// 请求执行成功
+			if (response.isSuccessful()) {
+				return JSONObject.parseObject(response.body().string());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			close(response);
+		}
+		return null;
+	}
+	
+	public static String getHtml(String url) {
+		Response response = null;
+		try {
+		//创建请求
+		Request request = new Request.Builder().url(url).build();
+		Call call = oK_HTTP_CLIENT.newCall(request);
+		//执行请求
+			response = call.execute();
+			if (response.isSuccessful()) {
+				return response.body().string();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			close(response);
+		}
+		return null;
+	}
+}

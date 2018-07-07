@@ -1,0 +1,17 @@
+package com.hll.web.service.impl;
+
+import org.springframework.stereotype.Service;
+
+import com.hll.web.service.MailService;
+import com.hll.web.util.MailUtil;
+
+@Service
+public class MailServiceImpl implements MailService {
+
+	@Override
+	public int sendEmail(String toAddress, String subject, String msgBody) {
+		MailUtil.sendMailEntity(toAddress, "", content);
+		return 0;
+	}
+	
+}
