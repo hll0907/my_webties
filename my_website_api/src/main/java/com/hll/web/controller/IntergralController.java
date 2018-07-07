@@ -118,4 +118,69 @@ public class IntergralController {
 		}
 		return ResultMsg.failure();
 	}
+
+	@RequestMapping(value = "/updateUserIntergral", method = RequestMethod.POST, produces = {
+			"application/json;charset=UTF-8" })
+	@ApiOperation(value = "修改积分", notes = "修改积分")
+	@ResponseBody
+	@ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "积分记录Id", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "tempIntergral", value = "积分", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "source", value = "积分来源", paramType = "query"),
+			@ApiImplicitParam(name = "note", value = "详细描述", paramType = "query"),
+			@ApiImplicitParam(name = "types", value = "操作类型(默认true加)", required = true, paramType = "query", dataType = "boolean") })
+	public ResultMsg updateUserIntergral(Integer id, Integer userId, Integer tempIntergral, String source, String note,
+			boolean types) {
+		IntergralRecords selectByPrimaryKey = intergralService.selectByPrimaryKey(id);
+		if (selectByPrimaryKey == null) {
+			return ResultMsg.failure("暂无积分记录", null, -1);
+		}
+		if (!userId.equals(selectByPrimaryKey.getUserId())) {
+			return ResultMsg.failure("无此用户积分记录", null, -2);
+		}
+		IntergralRecords intergralRecords = new IntergralRecords();
+		intergralRecords.setId(selectByPrimaryKey.getId());
+		intergralRecords.setUserId(userId);
+		intergralRecords.setTempIntergral(tempIntergral);
+		List<User> selectUserById = userService.selectUserById(userId);
+		User user = selectUserById.get(0);
+		if (types) {
+			intergralRecords.setIntergral(user.getIntegral() + tempIntergral);
+			intergralRecords.setIntergralType(1);
+		} else {
+			intergralRecords.setIntergral(user.getIntegral() - tempIntergral);
+			intergralRecords.setIntergralType(0);
+		}
+		intergralRecords.setSource(source);
+		intergralRecords.setNote(note);
+		int updateByPrimaryKeySelective = intergralService.updateByPrimaryKeySelective(intergralRecords);
+		if (updateByPrimaryKeySelective > 0) {
+			return ResultMsg.success("修改成功");
+		}
+		return ResultMsg.failure();
+	}
+
+	@RequestMapping(value = "/delUserIntergraldata", method = RequestMethod.DELETE, produces = {
+			"application/json;charset=UTF-8" })
+	@ApiOperation(value = "删除积分记录", notes = "删除积分记录,并非真的删除,把status改为0")
+	@ResponseBody
+	@ApiImplicitParams({ @ApiImplicitParam(name = "id", value = "积分记录Id", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query") })
+	public ResultMsg delUserIntergraldata(Integer id, Integer userId) {
+		IntergralRecords selectByPrimaryKey = intergralService.selectByPrimaryKey(id);
+		if (selectByPrimaryKey == null) {
+			return ResultMsg.failure("暂无积分记录", null, -1);
+		}
+		if (!userId.equals(selectByPrimaryKey.getUserId())) {
+			return ResultMsg.failure("无此用户积分记录", null, -2);
+		}
+		IntergralRecords record = new IntergralRecords();
+		record.setId(id);
+		record.setStatus(false);
+		int updateByPrimaryKeySelective = intergralService.updateByPrimaryKeySelective(record);
+		if (updateByPrimaryKeySelective > 0) {
+			return ResultMsg.success("成功");
+		}
+		return ResultMsg.failure();
+	}
 }

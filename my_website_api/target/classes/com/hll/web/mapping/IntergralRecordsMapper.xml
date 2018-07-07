@@ -11,11 +11,12 @@
 		<result column="note" jdbcType="VARCHAR" property="note" />
 		<result column="source" jdbcType="VARCHAR" property="source" />
 		<result column="intergral_type" jdbcType="INTEGER" property="intergralType" />
+		<result column="status" jdbcType="BIT" property="status" />
 	</resultMap>
 	<sql id="Base_Column_List">
 		id, user_id, temp_intergral, intergral, created_at,
 		updated_at, note,
-		source,intergral_type
+		source,intergral_type,status
 	</sql>
 	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
@@ -54,7 +55,7 @@
 		(id, user_id, temp_intergral,
 		intergral, created_at, updated_at,
 		note,
-		source,intergral_type)
+		source,intergral_type,status)
 		values (#{id,jdbcType=INTEGER},
 		#{userId,jdbcType=INTEGER},
 		#{tempIntergral,jdbcType=INTEGER},
@@ -63,7 +64,7 @@
 		#{updatedAt,jdbcType=VARCHAR},
 		#{note,jdbcType=VARCHAR},
 		#{source,jdbcType=VARCHAR},
-		#{intergralType,jdbcType=INTEGER})
+		#{intergralType,jdbcType=INTEGER},#{status,jdbcType=BIT})
 	</insert>
 	<insert id="insertSelective" parameterType="com.hll.web.pojo.IntergralRecords">
 		<selectKey keyProperty="id" order="AFTER" resultType="Integer">
@@ -96,6 +97,9 @@
 			<if test="intergralType != null">
 				intergral_type,
 			</if>
+			<if test="status != null">
+				status,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="userId != null">
@@ -121,6 +125,9 @@
 			</if>
 			<if test="intergralType != null">
 				#{intergralType,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=BIT},
 			</if>
 		</trim>
 	</insert>
@@ -151,6 +158,9 @@
 			<if test="intergral != null">
 				intergral_type = #{intergralType,jdbcType=INTEGER},
 			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=BIT},
+			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}
 	</update>
@@ -168,7 +178,8 @@
 		note = #{note,jdbcType=VARCHAR},
 		source =
 		#{source,jdbcType=VARCHAR},
-		intergral_type=#{intergralType,jdbcType=INTEGER}
+		intergral_type=#{intergralType,jdbcType=INTEGER},
+		status = #{status,jdbcType=BIT}
 		where id =
 		#{id,jdbcType=INTEGER}
 	</update>

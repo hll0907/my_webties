@@ -17,7 +17,14 @@ public class IntergralRecords {
 
 	private String source;
 	private Integer intergralType;
+	private Boolean status;
+	public Boolean getStatus() {
+		return status;
+	}
 
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
 	public Integer getIntergralType() {
 		return intergralType;
 	}
@@ -94,7 +101,8 @@ public class IntergralRecords {
 	public String toString() {
 		return "IntergralRecords [id=" + id + ", userId=" + userId + ", tempIntergral=" + tempIntergral + ", intergral="
 				+ intergral + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", note=" + note + ", source="
-				+ source + ", intergralType=" + intergralType + "]";
+				+ source + ", intergralType=" + intergralType + ", status=" + status + "]";
 	}
+
 
 }

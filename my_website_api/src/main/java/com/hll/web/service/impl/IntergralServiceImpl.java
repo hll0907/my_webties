@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hll.web.dao.IntergralRecordsMapper;
+import com.hll.web.dao.UserMapper;
 import com.hll.web.pojo.IntergralRecords;
+import com.hll.web.pojo.User;
 import com.hll.web.service.IntergralService;
 import com.hll.web.util.DateTimeUtil;
 
@@ -16,6 +18,8 @@ public class IntergralServiceImpl implements IntergralService {
 
 	@Autowired
 	IntergralRecordsMapper intergralRecordsMapper;
+	@Autowired
+	UserMapper userMapper;
 
 	@Transactional
 	@Override
@@ -29,7 +33,10 @@ public class IntergralServiceImpl implements IntergralService {
 
 	@Override
 	public IntergralRecords selectByPrimaryKey(Integer id) {
-
+		IntergralRecords selectByPrimaryKey = intergralRecordsMapper.selectByPrimaryKey(id);
+		if (selectByPrimaryKey != null) {
+			return selectByPrimaryKey;
+		}
 		return null;
 	}
 
@@ -62,8 +69,13 @@ public class IntergralServiceImpl implements IntergralService {
 	public int updateByPrimaryKeySelective(IntergralRecords record) {
 		String updateTime = DateTimeUtil.getStringDate();
 		record.setUpdatedAt(updateTime);
+		User user = new User();
+		user.setId(record.getUserId());
+		user.setIntegral(record.getIntergral());
+		user.setUpdateTime(updateTime);
 		int i = intergralRecordsMapper.updateByPrimaryKeySelective(record);
 		if (i > 0) {
+			userMapper.updateByPrimaryKeySelective(user);
 			return i;
 		}
 		return 0;
