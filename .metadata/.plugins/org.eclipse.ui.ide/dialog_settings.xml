@@ -12,6 +12,7 @@
 		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\Administrator\Desktop\RestSpringMVCDemo-master\RestSpringMVCDemo-master"/>
 			<item value="E:\workplace2\my_website_api"/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">

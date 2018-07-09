@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hll.web.operatelog.OperateLogs;
 import com.hll.web.pojo.IntergralRecords;
 import com.hll.web.pojo.User;
 import com.hll.web.result.ResultMsg;
@@ -36,6 +37,7 @@ public class IntergralController {
 	 * @param pageSize
 	 * @return
 	 */
+	@OperateLogs(moduleName = "查询所有用户/根据用户Id积分记录", option = "查询所有用户/根据用户Id积分记录", url = "/IntergralController/selectIntegraldata")
 	@RequestMapping(value = "/selectIntegraldata", method = RequestMethod.GET, produces = {
 			"application/json;charset=UTF-8" })
 	@ApiOperation(value = "查询所有用户/根据用户Id积分记录", notes = "查询所有用户/根据用户Id积分记录")
@@ -60,6 +62,7 @@ public class IntergralController {
 		return ResultMsg.success(uPageInfo);
 	}
 
+	@OperateLogs(moduleName = "添加积分", option = "添加积分", url = "/IntergralController/addUserIntergral")
 	@RequestMapping(value = "/addUserIntergral", method = RequestMethod.POST, produces = {
 			"application/json;charset=UTF-8" })
 	@ApiOperation(value = "添加积分", notes = "添加积分")
@@ -89,6 +92,7 @@ public class IntergralController {
 		return ResultMsg.failure();
 	}
 
+	@OperateLogs(moduleName = "扣除积分", option = "扣除积分", url = "/IntergralController/delUserIntergral")
 	@RequestMapping(value = "/delUserIntergral", method = RequestMethod.PUT, produces = {
 			"application/json;charset=UTF-8" })
 	@ApiOperation(value = "扣除积分", notes = "扣除积分")
@@ -119,6 +123,7 @@ public class IntergralController {
 		return ResultMsg.failure();
 	}
 
+	@OperateLogs(moduleName = "修改积分", option = "修改积分", url = "/IntergralController/updateUserIntergral")
 	@RequestMapping(value = "/updateUserIntergral", method = RequestMethod.POST, produces = {
 			"application/json;charset=UTF-8" })
 	@ApiOperation(value = "修改积分", notes = "修改积分")
@@ -160,6 +165,7 @@ public class IntergralController {
 		return ResultMsg.failure();
 	}
 
+	@OperateLogs(moduleName = "删除积分记录", option = "删除积分记录,并非真的删除,把status改为0", url = "/IntergralController/delUserIntergraldata")
 	@RequestMapping(value = "/delUserIntergraldata", method = RequestMethod.DELETE, produces = {
 			"application/json;charset=UTF-8" })
 	@ApiOperation(value = "删除积分记录", notes = "删除积分记录,并非真的删除,把status改为0")

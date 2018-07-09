@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hll.web.canstants.Global;
+import com.hll.web.operatelog.OperateLogs;
 import com.hll.web.pojo.User;
 import com.hll.web.result.ResultMsg;
 import com.hll.web.service.MailService;
@@ -28,6 +29,7 @@ public class MailController {
 	@Autowired
 	UserService userService;
 
+	@OperateLogs(moduleName = "邮箱发送验证码", option = "邮箱发送验证码", url = "/MailController/sendmail")
 	@RequestMapping(value = "/sendmail", method = RequestMethod.POST, produces = { "application/json;charset=UTF-8" })
 	@ApiOperation(value = "邮箱发送验证码", notes = "邮箱发送验证码")
 	@ResponseBody

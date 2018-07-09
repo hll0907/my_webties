@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.hll.web.result.ResultMsg;
 
 import io.swagger.annotations.ApiOperation;
-
 @Controller
 @RequestMapping("/weChatUser")
 public class WeChatController {

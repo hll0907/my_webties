@@ -1,2 +1,5 @@
-@Autowired
-	UserService userService;
+Multiple annotations found at this line:
+	- cvc-complex-type.2.4.c: The matching wildcard is strict, but no declaration can be found for element 'tx:method'.
+	- Cannot locate BeanDefinitionParser for element [method]
+	- Configuration problem: Cannot locate BeanDefinitionParser for element [method] Offending resource: file [E:/workplace2/my_website_api/src/
+	 main/resources/spring-mvc.xml]

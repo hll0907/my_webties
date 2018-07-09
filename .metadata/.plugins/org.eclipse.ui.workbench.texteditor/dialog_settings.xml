@@ -6,23 +6,31 @@
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="securityAspect" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="&#x09;&#x09;// TODO Auto-generated method stub"/>
+			<item value="SecurityAspect"/>
+			<item value="ExceptionAspect"/>
+			<item value="Response"/>
+			<item value="commons-logging"/>
+			<item value="TIMESTAMP"/>
+			<item value="status"/>
+			<item value="selectByExample"/>
+			<item value="TIMELIMIT"/>
 			<item value="mybatis"/>
 			<item value="spring-context-support"/>
 			<item value="mail"/>
 			<item value="com.github.pagehelper"/>
 			<item value="CommonsMultipartResolver"/>
 			<item value="org.springframework.context.annotation.Configuration"/>
-			<item value="TIMESTAMP"/>
-			<item value="Date"/>
-			<item value="contentType"/>
 		</list>
 		<list key="replacehistory">
+			<item value="ResultMsg"/>
+			<item value="Re"/>
 			<item value="VARCHAR"/>
 			<item value="String"/>
 		</list>
@@ -31,7 +39,7 @@
 		<item value="300" key="DIALOG_WIDTH"/>
 		<item value="1|Microsoft YaHei UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Microsoft YaHei UI" key="DIALOG_FONT_NAME"/>
 		<item value="410" key="DIALOG_HEIGHT"/>
-		<item value="1198" key="DIALOG_X_ORIGIN"/>
-		<item value="288" key="DIALOG_Y_ORIGIN"/>
+		<item value="1362" key="DIALOG_X_ORIGIN"/>
+		<item value="309" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

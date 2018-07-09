@@ -96,6 +96,8 @@
 		<item value="7" key="index"/>
 	</section>
 	<section name="quick_assist_proposal_size">
+		<item value="267" key="size.y"/>
+		<item value="403" key="size.x"/>
 	</section>
 	<section name="BuildPathsPropertyPage">
 		<item value="2" key="pageIndex"/>

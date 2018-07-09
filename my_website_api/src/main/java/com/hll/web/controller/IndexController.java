@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hll.web.result.ResultMsg;
-
 @Controller
 @RequestMapping("/")
 public class IndexController {

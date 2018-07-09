@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
 			intergralrecord.setCreatedAt(createdAt);
 			intergralrecord.setUpdatedAt(createdAt);
 			intergralrecord.setIntergralType(1);
+			intergralrecord.setStatus(true);
 			intergralRecordsMapper.insert(intergralrecord);
 			return 1;
 		}
