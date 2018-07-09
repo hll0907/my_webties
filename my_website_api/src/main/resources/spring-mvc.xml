@@ -15,7 +15,11 @@
                        http://www.springframework.org/schema/aop 
                         http://www.springframework.org/schema/aop/spring-aop.xsd">
 	<!-- 自动扫描该包，使SpringMVC认为包下用@controller注解的类是控制器 -->
-	<context:component-scan base-package="com.hll.web.controller"></context:component-scan>
+	<context:component-scan base-package="com.hll.web.controller">
+		<!-- 控制器增强，使一个Contoller成为全局的异常处理类，类中用@ExceptionHandler方法注解的方法可以处理所有Controller发生的异常 -->
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	</context:component-scan>
 	<!--避免IE执行AJAX时，返回JSON出现下载文件 -->
 	<bean id="mappingJacksonHttpMessageConverter"
 		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -117,12 +121,13 @@
 	</mvc:cors>
 
 	<aop:aspectj-autoproxy proxy-target-class="true" />
-
-<!-- 	<bean id="logAspect" class="com.hll.web.operatelog.AccountSysOptionLogAspect" /> -->
-<!-- 	事务拦截配置 -->
-<!-- 	<aop:config expose-proxy="true"> -->
-<!-- 		<aop:pointcut id="txPointcut" -->
-<!-- 			expression=" !execution(* com.hll.web.controller..*.*(..))" /> -->
-<!-- 			<aop:aspect ref="txPointcut"/> -->
-<!-- 	</aop:config>  -->
+<!-- 	<bean id="ExceptionAspect" class="com.hll.web.util.ExceptionAspect"/> -->
+	<!-- <bean id="logAspect" class="com.hll.web.operatelog.AccountSysOptionLogAspect" 
+		/> -->
+	<!-- 事务拦截配置 -->
+	<!-- <aop:config expose-proxy="true"> -->
+	<!-- <aop:pointcut id="txPointcut" -->
+	<!-- expression=" !execution(* com.hll.web.controller..*.*(..))" /> -->
+	<!-- <aop:aspect ref="txPointcut"/> -->
+	<!-- </aop:config> -->
 </beans>

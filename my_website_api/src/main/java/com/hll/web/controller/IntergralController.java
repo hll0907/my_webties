@@ -73,6 +73,9 @@ public class IntergralController {
 			@ApiImplicitParam(name = "note", value = "详细描述", paramType = "query") })
 	public ResultMsg addUserIntergral(Integer userId, Integer tempIntergral, String source, String note) {
 		List<User> selectUserById = userService.selectUserById(userId);
+		if (selectUserById == null) {
+			return ResultMsg.failure("无此用户", null, -1);
+		}
 		User user = selectUserById.get(0);
 		Integer integral = user.getIntegral();
 		IntergralRecords intergralRecords = new IntergralRecords();

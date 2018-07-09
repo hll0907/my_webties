@@ -41,9 +41,9 @@ public class UserController {
 
 	/**
 	 * 查询所有用户
-	 * 
-	 * @param pageNo
-	 * @param pageSize
+	 *  
+	 * @param pageNo 页码
+	 * @param pageSize 一页显示条数
 	 * @return
 	 */
 	@OperateLogs(moduleName = "查询用户", option = "查询用户信息", url = "/UserController/selectUserdata")
@@ -68,7 +68,7 @@ public class UserController {
 	/**
 	 * 根据用户id查询用户信息
 	 * 
-	 * @param userId
+	 * @param userId 用户Id
 	 * @return
 	 */
 	@OperateLogs(moduleName = "根据id查询用户", option = "根据id查询用户", url = "/UserController/selectUserByIddata")
@@ -88,10 +88,10 @@ public class UserController {
 	/**
 	 * 新增用户
 	 * 
-	 * @param phone
-	 * @param nickname
-	 * @param password
-	 * @param head_pic
+	 * @param phone 手机号
+	 * @param nickname 昵称
+	 * @param password 密码
+	 * @param head_pic 头像
 	 * @return
 	 */
 	@OperateLogs(moduleName = "新添加一个用户", option = "新添加一个用户", url = "/UserController/insterUser")
@@ -119,8 +119,8 @@ public class UserController {
 	/**
 	 * 用户登录 判断手机号和密码是否一致
 	 * 
-	 * @param phone
-	 * @param password
+	 * @param phone 手机号
+	 * @param password 密码
 	 * @return
 	 */
 	@OperateLogs(moduleName = "用户登录", option = "用户登录", url = "/UserController/userLogin")
@@ -148,9 +148,9 @@ public class UserController {
 	/**
 	 * 修改密码
 	 * 
-	 * @param phone
-	 * @param oldPassword
-	 * @param newPassword
+	 * @param phone 手机号
+	 * @param oldPassword 原密码
+	 * @param newPassword 新密码
 	 * @return
 	 */
 	@OperateLogs(moduleName = "修改密码", option = "修改密码", url = "/UserController/userUpdatePassword")
@@ -159,7 +159,7 @@ public class UserController {
 	@ApiOperation(value = "修改密码", notes = "修改密码")
 	@ResponseBody
 	@ApiImplicitParams({ @ApiImplicitParam(name = "phone", value = "手机号", required = true, paramType = "query"),
-			@ApiImplicitParam(name = "oldPassword", value = "旧密码", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "oldPassword", value = "原密码", required = true, paramType = "query"),
 			@ApiImplicitParam(name = "newPassword", value = "新密码", required = true, paramType = "query") })
 	public ResultMsg userUpdatePassword(String phone, String oldPassword, String newPassword) {
 		User user = userService.selectByPhone(phone);
@@ -184,8 +184,8 @@ public class UserController {
 	/**
 	 * 根据id删除用户信息 尽量少用
 	 * 
-	 * @param userId
-	 * @return
+	 * @param userId 用户Id
+	 * @return 
 	 */
 	@OperateLogs(moduleName = "根据用户Id删除用户", option = "根据用户Id删除用户", url = "/UserController/userDeldata")
 	@RequestMapping(value = "/userDeldata", method = RequestMethod.DELETE, produces = {
@@ -209,9 +209,9 @@ public class UserController {
 	/**
 	 * 用户上传头像（图片）
 	 * 
-	 * @param userId
-	 * @param headPic
-	 * @param request
+	 * @param userId 用户Id
+	 * @param headPic 头像
+	 * @param request 
 	 * @return
 	 * @throws IllegalStateException
 	 * @throws IOException
@@ -240,6 +240,14 @@ public class UserController {
 		return ResultMsg.failure();
 	}
 
+	/**
+	 * 忘记密码
+	 * 
+	 * @param phone 手机号
+	 * @param actiCode 验证码
+	 * @param newPassword 新密码
+	 * @return
+	 */
 	@OperateLogs(moduleName = "忘记密码", option = "忘记密码", url = "/UserController/forgetPassword")
 	@RequestMapping(value = "/forgetPassword", method = RequestMethod.POST, produces = {
 			"application/json;charset=UTF-8" })
@@ -266,6 +274,34 @@ public class UserController {
 		int i = userService.updateByPrimaryKeySelective(user);
 		if (i > 0) {
 			return ResultMsg.success("密码修改成功");
+		}
+		return ResultMsg.failure();
+	}
+
+	/**
+	 * 更新会员
+	 * @param userId 用户Id
+	 * @param newVip_type 会员类型
+	 * @return
+	 */
+	@OperateLogs(moduleName = "更新会员类型", option = "更新会员类型", url = "/UserController/userUpdateVip_type")
+	@RequestMapping(value = "/userUpdateVip_type", method = RequestMethod.PUT, produces = {
+			"application/json;charset=UTF-8" })
+	@ApiOperation(value = "更新会员类型", notes = "更新会员类型，")
+	@ResponseBody
+	@ApiImplicitParams({ @ApiImplicitParam(name = "userId", value = "用户Id", required = true, paramType = "query"),
+			@ApiImplicitParam(name = "newVip_type", value = "更新后会员类型", required = true, paramType = "query") })
+	public ResultMsg userUpdateVip_type(Integer userId, String newVip_type) {
+		List<User> selectUserById = userService.selectUserById(userId);
+		if (selectUserById == null) {
+			return ResultMsg.failure("无此用户", null, -1);
+		}
+		User record = new User();
+		record.setId(userId);
+		record.setVipType(newVip_type);
+		int i = userService.updateByPrimaryKeySelective(record);
+		if (i > 0) {
+			return ResultMsg.success("更新会员类型成功");
 		}
 		return ResultMsg.failure();
 	}

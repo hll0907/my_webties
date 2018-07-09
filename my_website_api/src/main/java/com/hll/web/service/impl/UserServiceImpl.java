@@ -1,17 +1,21 @@
 package com.hll.web.service.impl;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hll.web.canstants.Global;
 import com.hll.web.dao.IntergralRecordsMapper;
 import com.hll.web.dao.UserMapper;
 import com.hll.web.pojo.IntergralRecords;
 import com.hll.web.pojo.User;
 import com.hll.web.service.UserService;
+import com.hll.web.util.CommUtil;
 import com.hll.web.util.DateTimeUtil;
+import com.hll.web.util.NamePictureUtil;
 import com.hll.web.util.PwdUtil;
 
 @Service
@@ -21,6 +25,7 @@ public class UserServiceImpl implements UserService {
 	UserMapper userMapper;
 	@Autowired
 	IntergralRecordsMapper intergralRecordsMapper;
+
 	@Override
 	public List<User> selectUserAll() {
 		List<User> uList = userMapper.selectUserAll();
@@ -52,7 +57,14 @@ public class UserServiceImpl implements UserService {
 		user2.setPhone(record.getPhone());
 		user2.setNickname(record.getNickname());
 		user2.setHashPassword(PwdUtil.getHashPassword(tempSalt, record.getHashPassword()));
-		user2.setHeadPic(record.getHeadPic());
+		String headPic = null;
+		try {
+			headPic = NamePictureUtil.createNamePic(record.getNickname(), Global.outHeadPicPath,
+					CommUtil.genImageName() + record.getNickname());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		user2.setHeadPic(headPic);
 		int insertSelective = userMapper.insertSelective(user2);
 		if (insertSelective > 0) {
 			IntergralRecords intergralrecord = new IntergralRecords();
